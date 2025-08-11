@@ -1,4 +1,3 @@
-```markdown
 # `toolsed` — Simple, Practical Utilities for Python
 
 **`toolsed`** is a lightweight Python library that provides simple, reusable, and practical utility functions for everyday programming tasks. It’s designed to reduce boilerplate code and make common operations more readable and expressive.
@@ -305,4 +304,3 @@ MIT License. See `LICENSE` for details.
 ---
 
 > `toolsed` — because you shouldn't have to write the same helpers twice.
-```
