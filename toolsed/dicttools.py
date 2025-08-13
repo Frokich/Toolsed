@@ -9,6 +9,7 @@ def safe_get(d, *keys, default=None):
         return default
     return d
 
+
 def dict_merge(*dicts):
     result = {}
     for d in dicts:
@@ -16,5 +17,16 @@ def dict_merge(*dicts):
     return result
 
 
+def deep_merge(*dicts):
+    result = {}
+    for d in dicts:
+        if not isinstance(d, dict):
+            continue
+        for k, v in d.items():
+            if k in result and isinstance(result[k], dict) and isinstance(v, dict):
+                result[k] = deep_merge(result[k], v)
+            else:
+                result[k] = v
+    return result
 
 

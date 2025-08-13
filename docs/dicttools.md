@@ -46,3 +46,30 @@ c = {"x": 999}
 merged = dict_merge(a, b)        # → {"x": 1, "y": 99, "z": 3}
 merged2 = dict_merge(a, b, c)    # → {"x": 999, "y": 99, "z": 3}
 ```
+---
+
+### `deep_merge(*dicts)`
+
+Recursively merges dictionaries. If values are dictionaries, they are merged; otherwise, later values override earlier ones.
+
+**Parameters:**
+- `*dicts`: Any number of dictionaries
+
+**Returns:** A new deeply merged dictionary
+
+```python
+from toolsed import deep_merge
+
+a = {"x": 1, "nested": {"a": 1}}
+b = {"y": 2, "nested": {"b": 2}}
+c = {"z": 3, "nested": {"c": 3}}
+
+merged = deep_merge(a, b)  # → {"x": 1, "y": 2, "nested": {"a": 1, "b": 2}}
+deep = deep_merge(a, b, c) # → {"x": 1, "y": 2, "z": 3, "nested": {"a":1, "b":2, "c":3}}
+
+# Non-dict values are overwritten
+conflict = deep_merge(
+    {"config": {"theme": "dark", "font": "Arial"}},
+    {"config": {"theme": "light"}}
+)
+# → {"config": {"theme": "light", "font": "Arial"}}

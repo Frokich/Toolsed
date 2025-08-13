@@ -64,3 +64,26 @@ from toolsed import chunks
 
 list(chunks(range(7), 3))  # → [[0,1,2], [3,4,5], [6]]
 ```
+
+---
+
+### `without(iterable, *values)`
+
+Returns a new list with specified values removed.
+
+**Parameters:**
+- `iterable`: Any iterable (list, tuple, etc.)
+- `*values`: Values to remove
+
+**Returns:** New list without the specified values
+
+```python
+from toolsed import without
+
+without([1, 2, 3, 2, 1], 1, 2)  # -> [3]
+whitout(["a", "b", "c"], "b")   # -> ["a", "c"]
+whitout([1, 2, None, 3], None)  # -> [1, 2, 3]
+whitout(range(10), 5, 7)        # -> [0, 1, 2, 3, 4, 6, 8, 9]
+```
+
+---
