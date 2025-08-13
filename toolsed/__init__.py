@@ -12,6 +12,6 @@ __all__ = [
     'truncate', 'pluralize'
     ]
 
-__version__ = "0.1.2"
+__version__ = "0.1.3"
 __author__ = "Froki"
 __email__ = "iroorp32@gmail.com"
