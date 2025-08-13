@@ -2,8 +2,8 @@
 import pytest
 from toolsed import (
     first, last, noop, always, is_iterable,
-    flatten, ensure_list, compact, chunks,
-    safe_get, dict_merge,
+    flatten, ensure_list, compact, chunks, without,
+    safe_get, dict_merge, deep_merge,
     truncate, pluralize
 )
 
@@ -81,6 +81,61 @@ class TestDictTools:
         merged2 = dict_merge(a, b, c)
         assert merged2 == {"x": 999, "y": 99, "z": 3}
 
+    def test_deep_merge_simple(self):
+        a = {"x": 1, "y": 2}
+        b = {"y": 99, "z": 3}
+        result = deep_merge(a, b)
+        assert result == {"x": 1, "y": 99, "z": 3}
+
+    def test_deep_merge_nested_dicts(self):
+        a = {"nested": {"a": 1, "b": 2}}
+        b = {"nested": {"b": 3, "c": 4}}
+        result = deep_merge(a, b)
+        assert result == {"nested": {"a": 1, "b": 3, "c": 4}}
+
+    def test_deep_merge_multiple_dicts(self):
+        a = {"x": 1}
+        b = {"y": 2}
+        c = {"z": 3}
+        result = deep_merge(a, b, c)
+        assert result == {"x": 1, "y": 2, "z": 3}
+
+    def test_deep_merge_deep_nesting(self):
+        a = {"level1": {"level2": {"level3": {"a": 1}}}}
+        b = {"level1": {"level2": {"level3": {"b": 2}}}}
+        c = {"level1": {"level2": {"level4": 4}}}
+        result = deep_merge(a, b, c)
+        assert result == {
+            "level1": {
+                "level2": {
+                    "level3": {"a": 1, "b": 2},
+                    "level4": 4
+                }
+            }
+        }
+
+    def test_deep_merge_overwrite_non_dict(self):
+        a = {"config": {"theme": "dark", "size": 10}}
+        b = {"config": "default"}  # not a dict — should replace
+        result = deep_merge(a, b)
+        assert result == {"config": "default"}
+
+    def test_deep_merge_with_empty_dicts(self):
+        a = {"x": 1}
+        b = {}
+        c = {"y": 2}
+        result = deep_merge(a, b, c)
+        assert result == {"x": 1, "y": 2}
+
+    def test_deep_merge_non_dict_skipped(self):
+        a = {"x": 1}
+        b = None
+        c = {"y": 2}
+        result = deep_merge(a, b, c)
+        assert result == {"x": 1, "y": 2}
+
+    def test_deep_merge_no_args(self):
+        assert deep_merge() == {}
 
 class TestStringTools:
     def test_truncate(self):
@@ -95,7 +150,7 @@ class TestStringTools:
         assert pluralize(5, "яблоко", "яблок") == "5 яблок"
         assert pluralize(1, "яблоко", "яблок") == "1 яблоко"
 
-
+ 
 # Дополнительный тест: проверка, что всё экспортируется через __all__
 def test_all_exports():
     import toolsed
