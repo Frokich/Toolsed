@@ -24,3 +24,23 @@ def is_iterable(obj):
     except TypeError:
         return False
 
+def iden(x):
+    return x
+
+def tap(obj, func):
+    func(obj)
+    return obj
+
+def lmap(func, iterable):
+    return (map(func, iterable))
+
+def lfilter(func, iterable):
+    return list(filter(func, iterable))
+
+def falsy(value):
+    return not value
+
+def truthy(value):
+    return bool(value)
+
+

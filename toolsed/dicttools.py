@@ -30,3 +30,12 @@ def deep_merge(*dicts):
     return result
 
 
+def pick(d, *keys):
+    return {k: d[k] for k in keys if k in d}
+
+
+def omit(d, *keys):
+    return {k: v for k, v in d.items() if k not in keys}
+
+
+

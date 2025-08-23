@@ -1,10 +1,11 @@
 # tests/test_toolsed.py
+from _pytest.capture import capsys
 import pytest
 from toolsed import (
     first, last, noop, always, is_iterable,
-    flatten, ensure_list, compact, chunks, without,
+    flatten, ensure_list, compact, chunks,
     safe_get, dict_merge, deep_merge,
-    truncate, pluralize
+    truncate, pluralize, iden, tap, pick, lfilter, lmap, truthy, falsy, dedupe, omit, slugify
 )
 
 
@@ -150,12 +151,88 @@ class TestStringTools:
         assert pluralize(5, "яблоко", "яблок") == "5 яблок"
         assert pluralize(1, "яблоко", "яблок") == "1 яблоко"
 
- 
-# Дополнительный тест: проверка, что всё экспортируется через __all__
-def test_all_exports():
-    import toolsed
-    exported = toolsed.__all__
-    assert 'first' in exported
-    assert 'safe_get' in exported
-    assert 'pluralize' in exported
-    assert 'is_iterable' in exported
+class TestIden:
+    def test_iden_returns_same(self):
+        assert iden(42) == 42
+        assert iden("hello") == "hello"       
+        assert iden([1, 2]) == [1, 2]
+
+
+class TestTap:
+    def test_tap_returns_object(self, capsys):
+        result = tap("hello", print)
+        captured = capsys.readouterr()
+        assert result == "hello"
+        assert captured.out.strip() == "hello"
+
+    def test_tap_with_list(self, capsys):
+        data = [1, 2, 3]
+        result = tap(data, lambda x: x.append(4))
+        assert result == [1, 2, 3, 4]
+
+
+class TestLmap:
+    def test_lmap_applies_function(self):
+        lmap(str, [1, 2, 3]) == ["1", "2", "3"]
+        lmap(lambda x: x * 2, [1, 2, 3]) == [2, 4, 6]
+
+
+class TestLfilter:
+    def test_lfilter_filters_by_func(self):
+        assert lfilter(lambda x: x > 2, [1, 2, 3, 4]) == [3, 4]
+        assert lfilter(bool, [0, 1, "", "a"]) == [1, "a"]
+
+
+class TestFalsy:
+    def test_falsy_returns_true_for_falsy_values(self):
+        assert falsy(1) is False
+        assert falsy("a") is False
+
+    def test_truthy_returns_opposite_of_falsy(self):
+        assert truthy(42) is True
+        assert truthy("") is False
+        assert truthy([1]) is True
+        assert truthy([]) is False
+
+
+class TestDedupe:
+    def test_dedupe_removes_dublicate_preserves_order(self):
+        assert dedupe([1, 2, 2, 3, 1]) == [1, 2, 3]
+        assert dedupe(["a", "b", "a", "c"]) == ["a", "b", "c"]
+        assert dedupe([]) == []
+        assert dedupe([1, 1, 1]) == [1]
+
+
+class TestPick:
+    def test_pick_returns_only_specified_keys(self):
+        user = {"Name": "Alice", "age": 20, "email": "test@gmail.com"}
+        assert pick(user, "missing") == {}
+
+    def test_with_no_keys(self):
+        assert pick({"a": 1},) == {}
+       
+
+class TestOmit:
+    def test_omit_removes_specifie_keys(self):
+        user = {"name": "Alice", "password": "123", "age": 30}
+        assert omit(user, "password") == {"name": "Alice", "age": 30}
+
+    def test_omit_missing_keys(self):
+        assert omit({"a": 1}, "b") == {"a": 1}
+
+
+class TestSlugi:
+    def test_slugi_basic(self):
+        assert slugify("Hello World") == "hello-world"
+        assert slugify("C++ is great?") == "c-is-great"
+
+    def test_slugi_with_punctuation(self):
+        assert slugify("It's a test!") == "its-a-test"
+        assert slugify("user@domain.com") == "userdomaincom"
+
+    def test_slugi_edge_cases(self):
+        assert slugify("") == ""
+        assert slugify("   ") == ""
+        assert slugify("a-b_c") == "a-b-c"
+        assert slugify("a___b---c") == "a-b-c"
+

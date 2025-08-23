@@ -1,3 +1,5 @@
+import re
+
 def truncate(text: str, length: int, suffix: str = "...") -> str:
     if len(text) <= length:
         return text
@@ -15,4 +17,7 @@ def pluralize(count, singular, plural=None):
     word = singular if count == 1 else plural
     return f"{count} {word}"
 
-
+def slugify(text):
+    text = re.sub(r'[^a-zA-Z0-9\s_-]', '', str(text))      
+    text = re.sub(r'[-_\s]+', '-', text)
+    return text.strip('-').lower()

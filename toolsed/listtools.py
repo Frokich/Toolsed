@@ -37,3 +37,14 @@ def without(iterable, *values):
         return list(result)
     else:
         return [item for item in iterable if item not in values]
+
+
+def dedupe(iterable):
+    seen = set()
+    result = []
+    for item in iterable:
+        if item not in seen:
+            seen.add(item)
+            result.append(item)
+    return result
+

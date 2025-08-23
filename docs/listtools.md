@@ -87,3 +87,20 @@ whitout(range(10), 5, 7)        # -> [0, 1, 2, 3, 4, 6, 8, 9]
 ```
 
 ---
+
+### `dedupe(iterable)`
+
+Removes duplicates from an iterable, preserving order.
+
+**Parameters**
+- `iterable`: Any iterable.
+
+**Returns**: New list with duplicates removed
+
+```python
+from toolsed import dedupe
+
+dedupe([1, 2, 3, 1])  # -> [1, 2, 3]
+dedupe("abcbca")      # -> ["a", "b", "c"]
+```
+

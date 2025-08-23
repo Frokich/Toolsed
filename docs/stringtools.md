@@ -39,3 +39,22 @@ pluralize(2, "file")           # → "2 files"
 pluralize(5, "яблоко", "яблок") # → "5 яблок"
 pluralize(1, "item")           # → "1 item"
 ```
+
+---
+
+### `slugify(text)`
+
+Converts text to a URL-friendly slug (lowercase, hyphens, no special chars).
+
+**Parameters**
+- `text`: Input string
+
+**Returns**: Clean slug string
+
+```python
+from toolsed import slugify
+
+slugify("Hello World!")  # -> hello-world
+slugify("C++ is great!") # -> c-is-great
+slugify("A-b_c")         # -> a-b-c
+```

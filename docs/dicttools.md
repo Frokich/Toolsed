@@ -70,6 +70,48 @@ deep = deep_merge(a, b, c) # → {"x": 1, "y": 2, "z": 3, "nested": {"a":1, "b":
 # Non-dict values are overwritten
 conflict = deep_merge(
     {"config": {"theme": "dark", "font": "Arial"}},
-    {"config": {"theme": "light"}}
+    {"config": {"theme": "light"}}  # → {"config": {"theme": "light", "font": "Arial"}}
 )
-# → {"config": {"theme": "light", "font": "Arial"}}
+```
+
+---
+
+
+### `pick(d, *keys)`
+Returns a new dictionary with only the specified keys.
+
+**Parameters**
+- `d`: Source dictionary
+- `*keys`: Keys to include
+
+**Returns**: New dictionary with only the selected keys
+
+```python
+from toolsed import pick
+
+user = {"name": "Alice", "email": "a@ex.com", "age": 30}
+pick(user, "name", "email")  # -> {"name": "Alice", "email": "a@ex.com"}
+```
+
+---
+
+### `omit(d, *keys)`
+
+Returns a new dictionary without the specified keys.
+
+**Parameters**:
+- `d`: Source dictionary
+- `*keys`: Keys to exclude
+
+**Returns**: New dictionary without the specified keys.
+
+```python
+from toolsed import omit
+
+user = {"name": "Alice", "password": "123", "age": 30}
+omit(user, "password"  # -> {"name": "Alice", "age": 30})
+```
+
+---
+
+

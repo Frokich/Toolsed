@@ -94,3 +94,121 @@ is_iterable("hello")    # → False
 is_iterable((1, 2))     # → True
 is_iterable(42)         # → False
 ```
+
+
+---
+
+### `iden(x)`
+
+Returns the input unchanged. Useful as a default function in `map`, `filter`, etc.
+
+**Parameters**
+- `x`: Any value
+
+**Returns**: The same value
+
+```python
+from toolsed import identity
+
+list(map(identity, [1, 2, 3]))  # -> [1, 2, 3] 
+```
+
+---
+
+### tap(obj, func)
+
+Calls `func(obj)` and returns `obj`. Useful for debugging or side effects.
+
+**Parameters**
+- `obj`: Any object
+- `func`: Function to call with `obj`
+
+**Returns**: `obj` (unchanged)
+
+```python
+from toolsed import tap
+
+data = tap([1, 2, 3], print)  # Print the list, returns it.
+```
+
+---
+
+### lmap(func, iterable)
+
+Like `map()`, but returns a list directly.
+
+**Parameters**:
+- `func`: Function to apply
+- `iterable`: Any iterable
+
+**Returns**: List of results.
+
+```python
+from toolsed import lmap
+
+lmap(str, [1, 2, 3])  # -> ['1', '2', '3']
+```
+
+---
+
+### lfilter(func, iterable)
+
+Like a `filter()`, but returns a list directly.
+
+**Parameters**:
+- `func`: Predicate function
+- `iterable`: Any iterable
+
+**Returns**: List of filtered items
+
+```python
+from toolsed import lfilter
+
+lfilter(lambda x: x > 2, [1, 2, 3, 4])  # -> [3, 4]
+```
+
+---
+
+### falsy(value)
+
+Returns `True` if value is falsy (`None`, `()`, `""`, `[]`, `{}`, etc.).
+
+**Parameters**:
+- `value`: Any value
+
+**Returns**: `True` if falsy,`False` otherwise
+
+```python
+from toolsed import falsy
+
+falsy(None)         # -> True
+falsy("Some text")  # -> False
+```
+
+---
+
+### Truthy(value)
+
+Returns `True` if value is truthy (opposite of `falsy`)
+
+**Parameters**: 
+- `value`: Any value
+
+**Returns**: `True` if truthy, `False` otherwise
+
+```python
+from toolsed import truthy
+
+truthy(42)  # -> True
+truthy("")  # -> False
+truthy([1]) # -> True
+```
+```
+```
+```
+```
+
+```
+```
+
+
