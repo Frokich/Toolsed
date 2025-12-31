@@ -36,12 +36,13 @@ pip install -e .
 ## 🧩 Quick Example
 
 ```python
-from toolsed import first, safe_get, truncate, pluralize
+from toolsed import Functions
 
-first([1, 2, 3])                           # → 1
-safe_get({"a": {"b": 42}}, "a", "b")       # → 42
-truncate("Hello world", 8)                 # → "Hello..."
-pluralize(5, "file")                       # → "5 files"
+# init
+ft = Functions()
+
+ft.first([1, 2, 3])    # → 1
+ft.last([1, 2, 3])     # → 3
 ```
 
 ---
